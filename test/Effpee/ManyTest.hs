@@ -44,7 +44,7 @@ genManyEmpty :: GenT Identity (Many Char)
 genManyEmpty = constant Empty
 
 genManyMany :: GenT Identity (Many Char)
-genManyMany = fromList <$> list (linear 2 100) alpha
+genManyMany = fromList <$> list (linear 1 100) alpha
 
 genManySingleton :: GenT Identity (Many Char)
 genManySingleton = fromList <$> list (linear 1 1) alpha
@@ -133,7 +133,7 @@ takeTests
            take n xs === xs
     , testProperty "length $ take ((length xs) - 1) xs == length xs - 1" $
       property $
-        do xs <- forAll genMany
+        do xs <- forAll genManyMany
            let n = toInteger $ (length xs) - 1
            (length (take n xs)) === n
     ]

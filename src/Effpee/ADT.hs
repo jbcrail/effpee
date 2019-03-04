@@ -187,8 +187,8 @@ infixr 5 :.
 -- aka Snoc list
 data ManyReversed a
   = REmpty
-  | Many a :- a
-  deriving (Generic)
+  | ManyReversed a :- a
+  deriving (Show, Generic)
 
 -- Define a non-empty sequence of elements of type =a= in terms of =Many a=s.
 data NonEmpty a

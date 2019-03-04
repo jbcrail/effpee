@@ -2,8 +2,9 @@
 
 module Effpee.Many where
 
-import Data.Int
+import Data.Eq
 import Data.Function ((.))
+import Data.Int
 import Effpee
 import Effpee.ADT (Many (..), Boolean)
 import GHC.Show
@@ -72,7 +73,9 @@ append (x :. xs) ys = x :. (xs `append` ys) -- x :. (append xs ys)
 -- (2 :. 3 :. 4 :. Empty)
 -- Would this work with /infinite/ lists?
 drop :: Integer -> Many a -> Many a
-drop = todo "Effpee.Many.drop"
+drop _ Empty = Empty
+drop 0 xs = xs
+drop n (_ :. xs) = drop (n - 1) xs
 
 -- | Drop the first elements in the given @Many a@ that do not satisfy the
 -- given predicate function @(a -> Bool)@.
@@ -143,7 +146,7 @@ foldR
   -> Many a
   -> b
 foldR _ b Empty = b
-foldR f b (x :. xs) = todo "Effpee.Many.foldR f b (x :. xs) case"
+foldR f b (x :. xs) = f x (foldR f b xs)
 
 -- | fold from a seed value starting from the first element in a @Many a@.
 -- >>> foldL (+) 0 (1 :. 2 :. Empty)
@@ -182,7 +185,7 @@ sum' = todo "Effpee.Many.sum -- define in terms of foldR."
 length
   :: Many a
   -> Integer
-length = todo "Effpee.Many.length -- define only in terms of foldR."
+length xs = foldR (\_ b -> b + 1) 0 xs
 
 -- | OR-ing a @Many Boolean@ together.
 -- >>> or (Nah :. Yeah :. Empty)

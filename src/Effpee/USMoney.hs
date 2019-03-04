@@ -59,4 +59,10 @@ getPortrait OneHundredDollar  = Franklin
 isPresident
   :: Portrait
   -> Boolean     -- ^ this is the @Boolean@ from the ADT module NOT the builtin @Bool@ type
-isPresident = todo "Effpee.USMoney.isPresident"
+isPresident Washington = Yeah
+isPresident Jefferson  = Yeah
+isPresident Lincoln    = Yeah
+isPresident Hamilton   = Nah
+isPresident Jackson    = Yeah
+isPresident Grant      = Yeah
+isPresident Franklin   = Nah

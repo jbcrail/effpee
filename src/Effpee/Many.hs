@@ -13,6 +13,10 @@ import GHC.Show
 instance (Show a) => Show (Many a) where
   show = show . toList
 
+if' :: Bool -> a -> a -> a
+if' True  x _ = x
+if' False _ y = y
+
 -- | Returns the head of the given @Many a@ or the provided default value.
 -- >>> headOrDefault 5 (6 :. Empty)
 -- 6

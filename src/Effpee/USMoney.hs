@@ -48,8 +48,13 @@ evalBills = todo "Effpee.USMoney.evalBills"
 getPortrait
   :: USBill
   -> Portrait
-getPortrait FiveDollar = Lincoln -- To get you started with a passing case
-getPortrait _          = todo "Effpee.USMoney.getPortrait"
+getPortrait OneDollar         = Washington
+getPortrait TwoDollar         = Jefferson
+getPortrait FiveDollar        = Lincoln
+getPortrait TenDollar         = Hamilton
+getPortrait TwentyDollar      = Jackson
+getPortrait FiftyDollar       = Grant
+getPortrait OneHundredDollar  = Franklin
 
 isPresident
   :: Portrait

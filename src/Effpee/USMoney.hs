@@ -20,7 +20,9 @@ evalCoin :: USCoin -> Int
 evalCoin Penny         = 1
 evalCoin Nickel        = 5
 evalCoin Dime          = 10
+evalCoin Quarter       = 25
 evalCoin OneDollarCoin = 100
+evalCoin TwoDollarCoin = 200
 
 evalCoins
   :: Many USCoin

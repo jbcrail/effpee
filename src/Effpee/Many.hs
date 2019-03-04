@@ -268,4 +268,6 @@ flatten = todo "Effpee.Many.flatten -- define in terms of flatMap"
 reverse
   :: Many a
   -> Many a
-reverse = todo "Effpee.Many.reverse -- define in terms of explicit recursion AND foldR"
+reverse Empty = Empty
+reverse (x :. Empty) = x :. Empty
+reverse (x :. xs) = append (reverse xs) (x :. Empty)

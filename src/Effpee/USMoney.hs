@@ -29,13 +29,20 @@ evalCoins Empty     = 0
 evalCoins (x :. xs) = evalCoin x + evalCoins xs
 
 evalBill :: USBill -> Int
-evalBill = todo "Effpee.USMoney.evalBill"
+evalBill OneDollar        = 1
+evalBill TwoDollar        = 2
+evalBill FiveDollar       = 5
+evalBill TenDollar        = 10
+evalBill TwentyDollar     = 20
+evalBill FiftyDollar      = 50
+evalBill OneHundredDollar = 100
 
 -- Use @evalBill@ in this definition
 evalBills
   :: Many USBill
   -> Int
-evalBills = todo "Effpee.USMoney.evalBills"
+evalBills Empty     = 0
+evalBills (x :. xs) = evalBill x + evalBills xs
 
 -- Given a US bill/note produce the presient whose portrait appears on it.
 -- * $1   => Washington

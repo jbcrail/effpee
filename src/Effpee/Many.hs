@@ -5,6 +5,7 @@ module Effpee.Many where
 import Data.Eq
 import Data.Function ((.))
 import Data.Int
+import Data.Ord
 import Effpee
 import Effpee.ADT (Many (..), Boolean)
 import GHC.Show
@@ -98,7 +99,8 @@ take
   :: Integer
   -> Many a
   -> Many a
-take = todo "Effpee.Many.take"
+take _ Empty = Empty
+take n (x :. xs) = if' (n <= 0) Empty (x :. (take (n - 1) xs))
 
 -- | Take the first elements satisfying the given predicate function @(a -> Bool)@.
 -- >>> takeWhile isOdd (51 :. 53 :. 6 :. 55 :. Empty)

@@ -88,7 +88,8 @@ drop n (_ :. xs) = drop (n - 1) xs
 -- >>> dropWhile isOdd (13 :. 21 :. 32 :. 41 :. Empty)
 -- (32 :. 41 :. Empty)
 dropWhile :: (a -> Bool) -> Many a -> Many a
-dropWhile = todo "Effpee.Many.dropWhile"
+dropWhile _ Empty = Empty
+dropWhile f (x :. xs) = if' (f x) (dropWhile f xs) xs
 
 -- | Take the first @Integer@ elements from the given @Many a@.
 -- >>> take 5 (1 :. 2 :. Empty)
@@ -109,7 +110,8 @@ takeWhile
   :: (a -> Bool)
   -> Many a
   -> Many a
-takeWhile = todo "Effpee.Many.takeWhile"
+takeWhile _ Empty = Empty
+takeWhile f (x :. xs) = if' (f x) (x :. (takeWhile f xs)) Empty
 
 -- | Partition the first elements that satisfy the given predicate function
 -- @(a -> Bool)@ from the rest of the given @Many a@, returning a 2-tuple

@@ -8,7 +8,7 @@ import Data.Function ((.))
 import Data.Int
 import Data.Ord
 import Effpee
-import Effpee.ADT (Many (..), Boolean)
+import Effpee.ADT (Many (..), Boolean (..))
 import GHC.Show
 
 -- only needed for REPL interactions
@@ -124,7 +124,7 @@ partition
   :: (a -> Bool)
   -> Many a
   -> (Many a, Many a)
-partition = todo "Effpee.Many.partition -- define in terms of take* and/or drop*"
+partition f xs = ((takeWhile f xs), (dropWhile f xs))
 
 -- | Given a function @(a -> b -> c)@, a @Many a@, and a @Many b@ produce a @Many c@.
 -- >>> zipWith (+) (fromList [1 .. 5]) (fromList [1 .. 3])
@@ -136,7 +136,10 @@ zipWith
   -> Many a
   -> Many b
   -> Many c
-zipWith = todo "Effpee.Many.zipWith -- define using explicit recursion"
+zipWith _ Empty Empty = Empty
+zipWith _ _ Empty = Empty
+zipWith _ Empty _ = Empty
+zipWith f (a :. as) (b :. bs) = (f a b) :. (zipWith f as bs)
 
 -- | fold from a seed value starting from the right most element in a @Many a@.
 -- >>> foldR (:.) Empty (1 :. 2 :. 3 :. Empty)
@@ -165,7 +168,8 @@ foldL
   -> b
   -> Many a
   -> b
-foldL = todo "Effpee.Many.foldL"
+foldL _ acc Empty     = acc
+foldL f acc (x :. xs) = foldL f (f acc x) xs
 
 -- | Produce the produce of all the elements of a @Many Int@.
 -- >>> product (fromList [1 .. 10])

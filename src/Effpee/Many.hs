@@ -175,19 +175,21 @@ foldL f acc (x :. xs) = foldL f (f acc x) xs
 -- >>> product (fromList [1 .. 10])
 -- 3628800
 product :: Many Int -> Int
-product = todo "Effpee.Many.product -- define in terms of explicit recursion."
+product Empty = 1
+product (x :. xs) = x * (product xs)
 
 product' :: Many Int -> Int
-product' = todo "Effpee.Many.product -- define in terms of foldR."
+product' xs = foldR (*) 1 xs
 
 -- | Sum the elements of the given @Many Int@.
 -- >>> sum (fromList [1 .. 3])
 -- 6
 sum :: Many Int -> Int
-sum = todo "Effpee.Many.sum -- define in terms of explicit recursion."
+sum Empty = 0
+sum (x :. xs) = x + (sum xs)
 
 sum' :: Many Int -> Int
-sum' = todo "Effpee.Many.sum -- define in terms of foldR."
+sum' xs = foldR (+) 0 xs
 
 -- | Computes the length of the sequence of =a=s in a =ManyCons a=.
 -- Should be O(n).
@@ -206,11 +208,16 @@ length xs = foldR (\_ b -> b + 1) 0 xs
 -- >>> or Empty
 -- Nah
 or :: Many Boolean -> Boolean
-or = todo "Effpee.Many.or -- can you use foldR?"
+or Empty = Nah
+or xs = foldR reduce Nah xs
+  where reduce Nah Nah = Nah
+        reduce _ Yeah  = Yeah
+        reduce Yeah _  = Yeah
 
 -- | Generalize @or@.
 or' :: (a -> Bool) -> Many a -> Bool
-or' = todo "Effpee.Many.or'"
+or' _ Empty = False
+or' f (x :. xs) = (f x) || (or' f xs)
 
 -- | AND-ing a @Many Boolean@ together.
 -- >>> and (Yeah :. Nah :. Yeah :. Empty)
@@ -218,11 +225,16 @@ or' = todo "Effpee.Many.or'"
 -- >>> and Empty
 -- Nah
 and :: Many Boolean -> Boolean
-and = todo "Effpee.Many.and -- same question as above. Is there a pattern that you can extract from this?"
+and Empty = Nah
+and xs = foldR reduce Yeah xs
+  where reduce Yeah Yeah = Yeah
+        reduce _ Nah     = Nah
+        reduce Nah _     = Nah
 
 -- | Generalize @and@.
 and' :: (a -> Bool) -> Many a -> Bool
-and' = todo "Effpee.Many.and'"
+and' _ Empty = False
+and' f (x :. xs) = (f x) && (and' f xs)
 
 -- | Transform each element based on the given function @(a -> b)@.
 -- >>> transform (+1) (1 :. 2 :. 3 :. Empty)

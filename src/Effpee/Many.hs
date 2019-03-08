@@ -275,13 +275,13 @@ flatMap
   :: (a -> Many b)
   -> Many a
   -> Many b
-flatMap = todo "Effpee.Many.flatMap"
+flatMap f xs = foldR append Empty (transform f xs)
 
 -- | Flatten nested @Many (Many a)@ into a @Many a@.
 -- >>> flatten ((1 :. 2 :. Empty) :. (3 :. 4 :. Empty) :. Empty)
 -- (1 :. 2 :. 3 :. 4 :. Empty)
 flatten :: Many (Many a) -> Many a
-flatten = todo "Effpee.Many.flatten -- define in terms of flatMap"
+flatten xs = flatMap (\x -> x) xs
 
 -- | Reverses the sequence contains in the =ManyCons a=.
 --   Ignore any troubling runtime performance complexities. :)

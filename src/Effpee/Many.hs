@@ -2,6 +2,7 @@
 
 module Effpee.Many where
 
+import Data.Bool
 import Data.Eq
 import Data.Function ((.))
 import Data.Int
@@ -14,9 +15,9 @@ import GHC.Show
 instance (Show a) => Show (Many a) where
   show = show . toList
 
-if' :: Bool -> a -> a -> a
-if' True  x _ = x
-if' False _ y = y
+ifThenElse :: Bool -> a -> a -> a
+ifThenElse True  x _ = x
+ifThenElse False _ y = y
 
 -- | Returns the head of the given @Many a@ or the provided default value.
 -- >>> headOrDefault 5 (6 :. Empty)
@@ -89,7 +90,7 @@ drop n (_ :. xs) = drop (n - 1) xs
 -- (32 :. 41 :. Empty)
 dropWhile :: (a -> Bool) -> Many a -> Many a
 dropWhile _ Empty = Empty
-dropWhile f (x :. xs) = if' (f x) (dropWhile f xs) xs
+dropWhile f (x :. xs) = if f x then dropWhile f xs else x :. xs
 
 -- | Take the first @Integer@ elements from the given @Many a@.
 -- >>> take 5 (1 :. 2 :. Empty)
@@ -101,7 +102,7 @@ take
   -> Many a
   -> Many a
 take _ Empty = Empty
-take n (x :. xs) = if' (n <= 0) Empty (x :. (take (n - 1) xs))
+take n (x :. xs) = if n <= 0 then Empty else x :. (take (n - 1) xs)
 
 -- | Take the first elements satisfying the given predicate function @(a -> Bool)@.
 -- >>> takeWhile isOdd (51 :. 53 :. 6 :. 55 :. Empty)
@@ -111,7 +112,7 @@ takeWhile
   -> Many a
   -> Many a
 takeWhile _ Empty = Empty
-takeWhile f (x :. xs) = if' (f x) (x :. (takeWhile f xs)) Empty
+takeWhile f (x :. xs) = if f x then x :. (takeWhile f xs) else Empty
 
 -- | Partition the first elements that satisfy the given predicate function
 -- @(a -> Bool)@ from the rest of the given @Many a@, returning a 2-tuple

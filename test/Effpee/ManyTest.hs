@@ -140,7 +140,8 @@ takeTests
 
 takeWhileTests
   = testGroup "takeWhile"
-    [
+    [ testProperty "takeWhile on @Empty@ produces @Empty@" $
+      property $ takeWhile (const False) Empty === (Empty :: Many Char)
     ]
 
 partitionTests

@@ -245,7 +245,8 @@ transform
   :: (a -> b)
   -> Many a
   -> Many b
-transform = todo "Effpee.Many.transform"
+transform _ Empty = Empty
+transform f (x :. xs) = (f x) :. (transform f xs)
 
 -- | Filter elements out of the @Many a@ that do not meet the predicate criteria.
 -- The predicate function should produce @True@ to keep the element in the result.
@@ -255,7 +256,8 @@ filter
   :: (a -> Bool)
   -> Many a
   -> Many a
-filter = todo "Effpee.Many.filter"
+filter _ Empty = Empty
+filter f (x :. xs) = if f x then x :. filter f xs else filter f xs
 
 -- | Produce a singleton @Many a@ from a given @a@ value.
 -- >>> singleton "Victoria"
@@ -263,7 +265,7 @@ filter = todo "Effpee.Many.filter"
 -- >>> singleton 42
 -- (42 :. Empty)
 singleton :: a -> Many a
-singleton = todo "Effpee.Many.singleton"
+singleton x = x :. Empty
 
 -- | Apply the given @(a -> Many b)@ function to each element of the @Many a@ and
 -- then flatten the result into a @Many b@.
